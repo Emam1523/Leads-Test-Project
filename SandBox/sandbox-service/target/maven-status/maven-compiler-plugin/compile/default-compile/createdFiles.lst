@@ -1,0 +1,10 @@
+com\leads\sandbox\registration\repository\ClientRegistrationRepository.class
+com\leads\sandbox\registration\repository\AddressContact.class
+com\leads\sandbox\registration\repository\AccountInfo.class
+com\leads\sandbox\registration\repository\AddressContactRepository.class
+com\leads\sandbox\registration\repository\ClientDetails.class
+com\leads\sandbox\registration\repository\ClientRegistration.class
+com\leads\sandbox\customException\BadRequestException.class
+com\leads\sandbox\customException\ConflictException.class
+com\leads\sandbox\registration\repository\ClientDetailsRepository.class
+com\leads\sandbox\registration\repository\AccountInfoRepository.class
