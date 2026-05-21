@@ -60,7 +60,7 @@ public class ClientController {
             @RequestParam(value = "scope", required = false) String scope
     ) {
 
-        if (scope == null || scope.isBlank() || scope.equalsIgnoreCase("client")) {
+        if (scope.equalsIgnoreCase("client")) {
             DeleteClient response = clientCommandService.deleteClient(clientId);
             return ResponseEntity.ok(response);
         }
