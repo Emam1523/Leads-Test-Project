@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.leads.microcube</groupId>
+        <artifactId>microcube.platform</artifactId>
+        <version>0.8.1</version>
+    </parent>
+
+    <groupId>com.leads.sandbox</groupId>
+    <artifactId>microcube.sandbox</artifactId>
+    <version>0.1.0</version>
+    <packaging>pom</packaging>
+    <name>sandbox</name>
+
+    <properties>
+        <spring-boot.version>3.5.10</spring-boot.version>
+        <tomcat.version>11.0.21</tomcat.version>
+        <jackson.version>2.18.6</jackson.version>
+    </properties>
+
+    <modules>
+        <module>sandbox-api</module>
+        <module>sandbox-service</module>
+        <module>sandbox-provider</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.leads.sandbox</groupId>
+                <artifactId>microcube.sandbox-api</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leads.sandbox</groupId>
+                <artifactId>microcube.sandbox-service</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.27.7</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Security CVE Fixes -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

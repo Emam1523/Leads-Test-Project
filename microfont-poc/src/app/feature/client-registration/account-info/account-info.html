@@ -1,0 +1,23 @@
+<div>
+	<div class="panel define-groups-shell">
+		<section class="define-groups-header">
+			<app-expansion-panel-header [isOpenSignal]="accountHeaderPanel" [panelTitle]="'Account Information'">
+			</app-expansion-panel-header>
+		</section>
+
+		<div class="from-grid form-grid-3-col gap-4" [class.p-4]="true">
+			<input-office-box [frmGroup]="accountInfoForm" [label]="'Office Code'" [controlName]="'officeCode'" />
+
+			<input-number [frmGroup]="accountInfoForm" [label]="'Account No'" [controlName]="'accountNo'" />
+
+			<input-text-box [frmGroup]="accountInfoForm" [label]="'Account Title'" [controlName]="'accountTitle'" />
+
+			<input-date [frmGroup]="accountInfoForm" [label]="'Account Open Date'" [controlName]="'accountOpenDate'" />
+
+			<input-date [frmGroup]="accountInfoForm" [label]="'Account Expiry Date'"
+				[controlName]="'accountExpiryDate'" />
+
+			<input-number [frmGroup]="accountInfoForm" [label]="'Limit Amount'" [controlName]="'limitAmount'" />
+		</div>
+	</div>
+</div>

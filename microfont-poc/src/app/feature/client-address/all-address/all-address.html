@@ -1,0 +1,367 @@
+<div>
+  <mat-toolbar
+    color="primary"
+    style="
+      position: relative;
+      min-height: 64px;
+      padding: 0 16px;
+      background-color: rgb(8, 106, 216);
+    "
+  >
+    <span
+      style="
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        line-height: 1;
+        pointer-events: none;
+        color: white;
+      "
+      >All Addresses</span
+    >
+
+    <span style="flex: 1 1 auto"></span>
+
+    <generic-button
+      id="reset-btn"
+      label="Reset"
+      icon="refresh"
+      (onClick)="onReset()"
+      [styles]="'margin-right: 8px;'"
+    >
+    </generic-button>
+
+    <generic-button
+      id="exit-btn"
+      label="Exit"
+      icon="logout"
+      (onClick)="onExit()"
+      [styles]="'margin-right: 8px;'"
+    ></generic-button>
+  </mat-toolbar>
+
+  <main
+    style="
+      padding: 18px 24px 28px;
+      background: #f5f7fb;
+      min-height: calc(100vh - 64px);
+    "
+  >
+    <div style="margin: 8px 0 24px">
+      <generic-button
+        id="create-client-btn"
+        label="Create New Client"
+        icon="add"
+        (onClick)="onCreate()"
+      ></generic-button>
+    </div>
+
+    <generic-data-grid
+      [dataSource]="clients"
+      [showEditButton]="true"
+      [showDeleteButton]="true"
+      [showViewButton]="true"
+      [useInlineEdit]="false"
+      [searchEnabled]="true"
+      [showPaginator]="true"
+      [initPageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [uniqueIdField]="'clientId'"
+      [gridTitle]="'All Addresses'"
+      [selectedColumns]="selectedColumns"
+      [customColumnNames]="customColumnNames"
+      (onFHEditClick)="onEdit($event)"
+      (onFHDeleteClick)="onDelete($event)"
+      (onFHViewClick)="onView($event)"
+    >
+    </generic-data-grid>
+
+    <generic-modal
+      [isVisible]="showViewModal"
+      [modalTitle]="'Address Details'"
+      [showOkButton]="false"
+      [showCancelButton]="true"
+      [cancelButtonText]="'Close'"
+      (isVisibleChanged)="onModalVisibilityChange($event)"
+    >
+      <div class="modal-dialog">
+        <div class="max-h-[70vh]">
+          <div class="panel define-group-shell">
+            <section class="define-group-header">
+              <app-expansion-panel-header
+                [panelTitle]="'Address Information'"
+                [isOpenSignal]="infoHeaderOpen"
+              ></app-expansion-panel-header>
+            </section>
+          </div>
+
+          <div class="p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'clientId'"
+                [label]="'Client ID'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'clientName'"
+                [label]="'Client Name'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'addressTypeName'"
+                [label]="'Address Type'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'countryName'"
+                [label]="'Country'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'divisionName'"
+                [label]="'Division'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'districtName'"
+                [label]="'District'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'thanaName'"
+                [label]="'Thana'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'city'"
+                [label]="'City'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'zipCode'"
+                [label]="'Zip Code'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'email'"
+                [label]="'Email'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'mobileNo'"
+                [label]="'Mobile No'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+
+            <h3 class="text-base font-semibold mb-2 mt-4">Address</h3>
+            <hr class="my-3" />
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'address'"
+                [label]="'Address'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </generic-modal>
+
+    <generic-modal
+      [isVisible]="showEditModal"
+      [modalTitle]="'Edit Address'"
+      [showOkButton]="false"
+      [showCancelButton]="false"
+      (isVisibleChanged)="onEditModalVisibilityChange($event)"
+    >
+      <div class="modal-dialog">
+        <div class="max-h-[70vh]">
+          <div class="panel define-group-shell">
+            <section class="define-group-header">
+              <app-expansion-panel-header
+                [panelTitle]="'Address Information'"
+                [isOpenSignal]="editHeaderOpen"
+              ></app-expansion-panel-header>
+            </section>
+          </div>
+
+          <form [formGroup]="editForm" class="p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'clientId'"
+                [label]="'Client ID'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'clientName'"
+                [label]="'Client Name'"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-select-option-field
+                [frmGroup]="editForm"
+                [controlName]="'addressType'"
+                [label]="'Address Type'"
+                [options]="addressTypeOptions"
+                displayMode="vertical"
+              ></input-select-option-field>
+
+              <input-select-option-field
+                [frmGroup]="editForm"
+                [controlName]="'country'"
+                [label]="'Country'"
+                [options]="countries"
+                displayMode="vertical"
+              ></input-select-option-field>
+
+              <input-select-option-field
+                [frmGroup]="editForm"
+                [controlName]="'division'"
+                [label]="'Division'"
+                [options]="divisions"
+                displayMode="vertical"
+              ></input-select-option-field>
+
+              <input-select-option-field
+                [frmGroup]="editForm"
+                [controlName]="'district'"
+                [label]="'District'"
+                [options]="districts"
+                displayMode="vertical"
+              ></input-select-option-field>
+
+              <input-select-option-field
+                [frmGroup]="editForm"
+                [controlName]="'thana'"
+                [label]="'Thana'"
+                [options]="thanas"
+                displayMode="vertical"
+              ></input-select-option-field>
+
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'city'"
+                [label]="'City'"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'zipCode'"
+                [label]="'Zip Code'"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'email'"
+                [label]="'Email'"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="editForm"
+                [controlName]="'mobileNo'"
+                [label]="'Mobile No'"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+
+            <h3 class="text-lg font-semibold mb-2 mt-8 text-gray-800">
+              Address
+            </h3>
+            <hr class="my-4 border-gray-200" />
+
+            <div class="grid grid-cols-1 gap-6">
+              <input-text-area
+                [frmGroup]="editForm"
+                [controlName]="'address'"
+                [label]="'Full Address'"
+                displayMode="vertical"
+                [rows]="3"
+              ></input-text-area>
+            </div>
+
+            <div class="flex justify-end gap-3 w-full">
+              <generic-button
+                id="update-address-btn"
+                label="Update"
+                icon="save"
+                (onClick)="onEditUpdate()"
+              ></generic-button>
+
+              <generic-button
+                id="reset-address-btn"
+                label="Reset"
+                icon="refresh"
+                (onClick)="onEditReset()"
+              ></generic-button>
+
+              <generic-button
+                id="close-edit-modal-btn"
+                label="Close"
+                icon="logout"
+                (onClick)="onEditModalVisibilityChange(false)"
+              ></generic-button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </generic-modal>
+  </main>
+
+  <app-alert-success
+    [isOpen]="showSuccessAlert()"
+    [message]="successAlertMessage"
+    (close)="closeSuccessAlert()"
+  ></app-alert-success>
+
+  <app-alert-error
+    [isOpen]="showErrorAlert()"
+    [message]="errorAlertMessage"
+    (close)="closeErrorAlert()"
+  ></app-alert-error>
+
+  <app-alert-error
+    [isOpen]="showDeleteConfirm"
+    [config]="getDeleteConfirmConfig()"
+    (close)="closeDeleteConfirm()"
+    (buttonClick)="onDeleteConfirmButtonClick($event)"
+  ></app-alert-error>
+</div>

@@ -1,0 +1,285 @@
+<div>
+  <mat-toolbar
+    color="primary"
+    style="
+      position: relative;
+      min-height: 64px;
+      padding: 0 16px;
+      background-color: rgb(8, 106, 216);
+    "
+  >
+    <span
+      style="
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        line-height: 1;
+        pointer-events: none;
+        color: white;
+      "
+      >All Accounts</span
+    >
+
+    <span style="flex: 1 1 auto"></span>
+
+    <generic-button
+      id="reset-btn"
+      label="Reset"
+      icon="refresh"
+      (onClick)="onReset()"
+      [styles]="'margin-right: 8px;'"
+    >
+    </generic-button>
+
+    <generic-button
+      id="exit-btn"
+      label="Exit"
+      icon="logout"
+      (onClick)="onExit()"
+      [styles]="'margin-right: 8px;'"
+    ></generic-button>
+  </mat-toolbar>
+
+  <main
+    style="
+      padding: 18px 24px 28px;
+      background: #f5f7fb;
+      min-height: calc(100vh - 64px);
+    "
+  >
+    <div style="margin: 8px 0 24px">
+      <generic-button
+        id="create-client-btn"
+        label="Create New Client"
+        icon="add"
+        (onClick)="onCreate()"
+      ></generic-button>
+    </div>
+
+    <generic-data-grid
+      [dataSource]="clients"
+      [showEditButton]="true"
+      [showDeleteButton]="true"
+      [showViewButton]="true"
+      [useInlineEdit]="false"
+      [searchEnabled]="true"
+      [showPaginator]="true"
+      [initPageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [uniqueIdField]="'clientId'"
+      [gridTitle]="'All Accounts'"
+      [selectedColumns]="selectedColumns"
+      [customColumnNames]="customColumnNames"
+      (onFHEditClick)="onEdit($event)"
+      (onFHDeleteClick)="onDelete($event)"
+      (onFHViewClick)="onView($event)"
+    >
+    </generic-data-grid>
+
+    <generic-modal
+      [isVisible]="showViewModal"
+      [modalTitle]="'Account Details'"
+      [showOkButton]="false"
+      [showCancelButton]="true"
+      [cancelButtonText]="'Close'"
+      (isVisibleChanged)="onModalVisibilityChange($event)"
+    >
+
+        <div class="border rounded-md bg-white overflow-hidden" style="max-height: 70vh; overflow-y: auto;">
+          <app-expansion-panel-header
+            [panelTitle]="'Address Information'"
+            [isOpenSignal]="infoHeaderOpen"
+          ></app-expansion-panel-header>
+
+          <div class="p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'clientId'"
+                [label]="'Client ID'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'clientName'"
+                [label]="'Client Name'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'officeCode  '"
+                [label]="'Office Code'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountNo'"
+                [label]="'Account Number'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountTitle'"
+                [label]="'Account Title'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountOpenDate'"
+                [label]="'Account Open Date'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountExpiryDate'"
+                [label]="'Account Expiry Date'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'limitAmount'"
+                [label]="'Limit Amount'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+            </div>
+          </div>
+        </div>
+    </generic-modal>
+
+    <generic-modal
+      [isVisible]="showEditModal"
+      [modalTitle]="'Edit Account'"
+      [showOkButton]="false"
+      [showCancelButton]="false"
+      (isVisibleChanged)="onEditModalVisibilityChange($event)"
+      class="max-h-[80vh] overflow-y-auto"
+    >
+      <div class="border rounded-md bg-white">
+        <app-expansion-panel-header
+          [panelTitle]="'Account Information'"
+          [isOpenSignal]="editHeaderOpen"
+        ></app-expansion-panel-header>
+
+        <form [formGroup]="editForm" class="p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'clientId'"
+              [label]="'Client ID'"
+              [isReadonly]="true"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'clientName'"
+              [label]="'Client Name'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'officeCode'"
+              [label]="'Office Code'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'accountNo'"
+              [label]="'Account Number'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'accountTitle'"
+              [label]="'Account Title'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'accountOpenDate'"
+              [label]="'Account Open Date'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'accountExpiryDate'"
+              [label]="'Account Expiry Date'"
+              displayMode="vertical"
+            ></input-text-box>
+
+            <input-text-box
+              [frmGroup]="editForm"
+              [controlName]="'limitAmount'"
+              [label]="'Limit Amount'"
+              displayMode="vertical"
+            ></input-text-box>
+          </div>
+
+          <div class="flex justify-end gap-3 w-full mt-8">
+            <generic-button
+              id="update-account-btn"
+              label="Update"
+              icon="update"
+              (onClick)="onEditUpdate()"
+            ></generic-button>
+
+            <generic-button
+              id="reset-account-btn"
+              label="Reset"
+              icon="refresh"
+              (onClick)="onEditReset()"
+            ></generic-button>
+
+            <generic-button
+              id="close-edit-modal-btn"
+              label="Cancel"
+              icon="logout"
+              (onClick)="onEditModalVisibilityChange(false)"
+            ></generic-button>
+          </div>
+        </form>
+      </div>
+    </generic-modal>
+
+  </main>
+
+  <app-alert-success
+    [isOpen]="showSuccessAlert"
+    [message]="successAlertMessage"
+    (close)="showSuccessAlert = false"
+  ></app-alert-success>
+
+  <app-alert-error
+    [isOpen]="showErrorAlert"
+    [message]="errorAlertMessage"
+    (close)="showErrorAlert = false"
+  ></app-alert-error>
+
+  <confirmation-dialogue
+    [isOpen]="showDeleteConfirm"
+    [title]="'Delete Confirmation'"
+    [message]="deleteConfirmMessage"
+    [variant]="'danger'"
+    (close)="closeDeleteConfirm()"
+    (buttonClick)="onDeleteConfirmButtonClick($event)"
+  ></confirmation-dialogue>
+</div>

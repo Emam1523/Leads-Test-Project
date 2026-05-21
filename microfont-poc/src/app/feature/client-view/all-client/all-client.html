@@ -1,0 +1,236 @@
+<div>
+  <mat-toolbar
+    color="primary"
+    style="
+      position: relative;
+      min-height: 64px;
+      padding: 0 16px;
+      background-color: rgb(8, 106, 216);
+    "
+  >
+    <span
+      style="
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        line-height: 1;
+        pointer-events: none;
+        color: white;
+      "
+      >All Clients</span
+    >
+
+    <span style="flex: 1 1 auto"></span>
+
+
+    <generic-button
+      id="reset-btn"
+      label="Reset"
+      icon="refresh"
+      (onClick)="onReset()"
+      [styles]="'margin-right: 8px;'"
+    >
+    </generic-button>
+
+    <generic-button
+      id="exit-btn"
+      label="Exit"
+      icon="logout"
+      (onClick)="onExit()"
+      [styles]="'margin-right: 8px;'"
+    ></generic-button>
+  </mat-toolbar>
+
+  <main
+    style="
+      padding: 18px 24px 28px;
+      background: #f5f7fb;
+      min-height: calc(100vh - 64px);
+    "
+  >
+    <div style="margin: 8px 0 24px">
+      <generic-button
+        id="create-client-btn"
+        label="Create New Client"
+        icon="add"
+        (onClick)="onCreate()"
+      ></generic-button>
+    </div>
+
+    <generic-data-grid
+      [dataSource]="clients"
+      [showEditButton]="true"
+      [showDeleteButton]="true"
+      [showViewButton]="true"
+      [useInlineEdit]="false"
+      [searchEnabled]="true"
+      [showPaginator]="true"
+      [initPageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [uniqueIdField]="'clientId'"
+      [gridTitle]="'All Clients'"
+      [selectedColumns]="selectedColumns"
+      [customColumnNames]="customColumnNames"
+      (onFHEditClick)="onEdit($event)"
+      (onFHDeleteClick)="onDelete($event)"
+      (onFHViewClick)="onView($event)"
+    >
+    </generic-data-grid>
+
+    <generic-modal
+      [isVisible]="showViewModal"
+      [modalTitle]="'Client Details'"
+     [cssClass]="'model-sm'"
+      [showOkButton]="false"
+      [showCancelButton]="true"
+      [cancelButtonText]="'Close'"
+      (isVisibleChanged)="onModalVisibilityChange($event)"
+    >
+
+        <div class="border rounded-md bg-white overflow-hidden" style="max-height: 70vh; overflow-y: auto;">
+          <app-expansion-panel-header
+            [panelTitle]="'Client Information'"
+            [isOpenSignal]="infoHeaderOpen"
+          ></app-expansion-panel-header>
+
+          <div class="p-4">
+            <app-expansion-sub-panel-header
+              [subPanelTitle]="'Personal Details'"
+              [isOpenSignal]="personalDetailsOpen"
+            ></app-expansion-sub-panel-header>
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'clientName'"
+                [label]="'Client Name'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'fatherName'"
+                [label]="'Father Name'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'motherName'"
+                [label]="'Mother Name'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'gender'"
+                [label]="'Gender'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'maritalStatus'"
+                [label]="'Marital Status'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'dateOfBirth'"
+                [label]="'Date of Birth'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'nid'"
+                [label]="'NID'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+
+            <h3 class="text-base font-semibold mb-2 mt-4">Contact & Address</h3>
+            <hr class="my-3" />
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'mobileNo'"
+                [label]="'Mobile No'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'email'"
+                [label]="'Email'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'city'"
+                [label]="'City'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+
+            <h3 class="text-base font-semibold mb-2 mt-4">
+              Account Information
+            </h3>
+            <hr class="my-3" />
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountNo'"
+                [label]="'Account Number'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'accountTitle'"
+                [label]="'Account Title'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+              <input-text-box
+                [frmGroup]="viewForm"
+                [controlName]="'limitAmount'"
+                [label]="'Limit Amount'"
+                [isReadonly]="true"
+                displayMode="vertical"
+              ></input-text-box>
+            </div>
+          </div>
+        </div>
+    </generic-modal>
+  </main>
+    <app-alert-success
+    [isOpen]="showSuccessAlert()"
+    [message]="successAlertMessage"
+    (close)="closeSuccessAlert()"
+  ></app-alert-success>
+
+  <app-alert-error
+    [isOpen]="showErrorAlert()"
+    [message]="errorAlertMessage"
+    (close)="closeErrorAlert()"
+  ></app-alert-error>
+
+  <confirmation-dialogue
+    [isOpen]="showDeleteConfirm()"
+    [title]="'Delete Confirmation'"
+    [message]="deleteConfirmMessage"
+    [variant]="'danger'"
+    (close)="closeDeleteConfirm()"
+    (buttonClick)="onDeleteConfirmButtonClick($event)"
+  ></confirmation-dialogue>
+</div>

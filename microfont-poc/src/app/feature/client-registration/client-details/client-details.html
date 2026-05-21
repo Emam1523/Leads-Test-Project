@@ -1,0 +1,59 @@
+<div>
+  <div class="panel define-groups-shell">
+    <section class="define-groups-header">
+      <app-expansion-panel-header
+        [isOpenSignal]="detailsHeaderPanel"
+        [panelTitle]="'Client Details'"
+      >
+      </app-expansion-panel-header>
+    </section>
+    <div class="from-grid form-grid-3-col gap-4" [class.p-4]="true">
+      <input-text-box
+        [frmGroup]="clientDetailsForm"
+        [label]="'Father\'s Name'"
+        [controlName]="'fatherName'"
+      />
+
+      <input-text-box
+        [frmGroup]="clientDetailsForm"
+        [label]="'Mother\'s Name'"
+        [controlName]="'motherName'"
+      />
+
+      <input-date
+        [frmGroup]="clientDetailsForm"
+        [label]="'Date of Birth'"
+        [controlName]="'dateOfBirth'"
+        [maxDate]="maxBirthDate"
+        [maxYear]="maxBirthYear"
+      />
+
+      <input-select-option-field
+        [frmGroup]="clientDetailsForm"
+        [label]="'Gender'"
+        [controlName]="'gender'"
+        [options]="genderOptions"
+      />
+
+      <input-select-option-field
+        [frmGroup]="clientDetailsForm"
+        [label]="'Marital Status'"
+        [controlName]="'maritalStatus'"
+        [options]="maritalStatusOptions"
+      />
+
+      <input-text-box
+        [frmGroup]="clientDetailsForm"
+        [label]="'Spouse Name'"
+        [controlName]="'spouseName'"
+      />
+
+      <input-number
+        [frmGroup]="clientDetailsForm"
+        [label]="'NID Number'"
+        [controlName]="'nid'"
+        [maxLen]="17"
+      />
+    </div>
+  </div>
+</div>

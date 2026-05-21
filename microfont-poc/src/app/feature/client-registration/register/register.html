@@ -1,0 +1,22 @@
+<div class="registration-page">
+	<div class="registration-shell">
+		<form [formGroup]="form" class="registration-form form-grid gap-4">
+			<app-client-info [clientInfoForm]="clientInfoForm" [isEditMode]="isEditMode"></app-client-info>
+			<app-client-details [clientDetailsForm]="clientDetailsForm"></app-client-details>
+			<app-address-contact [addressContactForm]="addressContactForm"></app-address-contact>
+			<app-account-info [accountInfoForm]="accountInfoForm"></app-account-info>
+		</form>
+	</div>
+</div>
+
+<app-alert-success
+  [isOpen]="showSuccessAlert()"
+  [message]="successAlertMessage"
+  (close)="closeSuccessAlert()"
+></app-alert-success>
+
+<app-alert-error
+  [isOpen]="showErrorAlert()"
+  [message]="errorAlertMessage"
+  (close)="closeErrorAlert()"
+></app-alert-error>

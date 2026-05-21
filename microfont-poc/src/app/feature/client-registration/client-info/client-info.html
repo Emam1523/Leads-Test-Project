@@ -1,0 +1,25 @@
+<div>
+  <div class="panel define-groups-shell">
+    <section class="define-groups-header">
+      <app-expansion-panel-header [isOpenSignal]="infoHeaderPanel" [panelTitle]="'Client Info'">
+      </app-expansion-panel-header>
+    </section>
+    <div class="from-grid form-grid-2-col gap-4" [class.p-4]="true">
+      <div class="flex items-center gap-2 w-full">
+        <input-text-box class="flex-1 w-full" [frmGroup]="clientInfoForm" [label]="'Client Name'"
+          [controlName]="'clientName'" />
+        <button
+          *ngIf="!isEditMode"
+          type="button"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full h-fit shadow-sm transition-colors duration-200"
+          (click)="generateClientId()"
+        >
+          Click
+        </button>
+      </div>
+
+      <input-text-box [frmGroup]="clientInfoForm" [label]="'Client ID'" [controlName]="'clientId'"
+        [isReadonly]="true" />
+    </div>
+  </div>
+</div>
