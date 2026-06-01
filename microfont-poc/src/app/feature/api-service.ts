@@ -1,21 +1,23 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientRegistrationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8199/sandbox/api/clients';
-  private lookupsUrl = 'http://localhost:8199/sandbox/api/lookup';
-  private clientListUrl = 'http://localhost:8199/sandbox/api/clients/list';
-  private updateUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/update';
-  private deleteUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/delete';
-  private updateAddressUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/updateAddress';
-  private deleteAddressUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/address';
-  private deleteAccountUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/account';
-  private updateAccountUrl = 'http://localhost:8199/sandbox/api/clients/{clientId}/updateAccount';
+  private readonly baseApiUrl = `${environment.apiBaseUrl}/sandbox/api`;
+  private readonly apiUrl = `${this.baseApiUrl}/clients`;
+  private readonly lookupsUrl = `${this.baseApiUrl}/lookup`;
+  private readonly clientListUrl = `${this.apiUrl}/list`;
+  private readonly updateUrl = `${this.apiUrl}/{clientId}/update`;
+  private readonly deleteUrl = `${this.apiUrl}/{clientId}/delete`;
+  private readonly updateAddressUrl = `${this.apiUrl}/{clientId}/updateAddress`;
+  private readonly deleteAddressUrl = `${this.apiUrl}/{clientId}/deleteAddress`;
+  private readonly deleteAccountUrl = `${this.apiUrl}/{clientId}/deleteAccount`;
+  private readonly updateAccountUrl = `${this.apiUrl}/{clientId}/updateAccount`;
 
   generateClientId(clientName: string): Observable<{ clientId: string }> {
     return this.http.post<{ clientId: string }>(`${this.apiUrl}/generateId`, { clientName });
@@ -58,6 +60,11 @@ export class ClientRegistrationService {
 
   deleteClient(clientId: string): Observable<any> {
     const url = this.deleteUrl.replace('{clientId}', encodeURIComponent(clientId));
+    return this.http.delete<any>(url);
+  }
+
+  deleteClientByScope(clientId: string): Observable<any> {
+    const url = `${this.apiUrl}/${encodeURIComponent(clientId)}/delete`;
     return this.http.delete<any>(url);
   }
 
