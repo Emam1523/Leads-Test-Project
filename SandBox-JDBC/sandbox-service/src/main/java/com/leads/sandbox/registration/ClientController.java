@@ -60,7 +60,7 @@ public class ClientController {
         );
     }
 
-    @PutMapping({"/{clientId}/address", "/{clientId}/updateAddress"})
+    @PutMapping({ "/{clientId}/updateAddress"})
     public ResponseEntity<RetrieveClientAddress> updateClientAddress(
             @PathVariable String clientId,
             @Valid @RequestBody(required = false) UpdateClientAddressPayload payload
@@ -110,7 +110,7 @@ public class ClientController {
         return request;
     }
 
-    @PutMapping({"/{clientId}/account", "/{clientId}/updateAccount"})
+    @PutMapping({ "/{clientId}/updateAccount"})
     public ResponseEntity<RetrieveClientAccount> updateClientAccount(
             @PathVariable String clientId,
             @Valid @RequestBody(required = false) UpdateClientAccountPayload payload
@@ -171,7 +171,7 @@ public class ClientController {
         );
     }
 
-    @DeleteMapping("/{clientId}/address")
+    @DeleteMapping("/{clientId}/deleteAddress")
     public ResponseEntity<DeleteAddress> deleteClientAddress(
             @PathVariable String clientId
     ) {
@@ -180,7 +180,7 @@ public class ClientController {
         );
     }
 
-    @DeleteMapping("/{clientId}/account")
+    @DeleteMapping("/{clientId}/deleteAccount")
     public ResponseEntity<DeleteAccount> deleteClientAccount(
             @PathVariable String clientId
     ) {
