@@ -7,8 +7,8 @@ import com.leads.sandbox.register.command.*;
 import com.leads.sandbox.register.query.*;
 import com.leads.sandbox.register.service.*;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class ClientController {
             @RequestParam(value = "scope", required = false) String scope
     ) {
 
-        if (scope.equalsIgnoreCase("client")) {
+        if (scope == null || scope.isBlank() || scope.equalsIgnoreCase("client")) {
             DeleteClient response = clientCommandService.deleteClient(clientId);
             return ResponseEntity.ok(response);
         }
@@ -110,7 +110,7 @@ public class ClientController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{clientId}/address")
+    @DeleteMapping("/{clientId}/deleteAddress")
     public ResponseEntity<DeleteAddress> deleteClientAddress(
             @PathVariable("clientId") String clientId
     ) {
@@ -123,7 +123,7 @@ public class ClientController {
         return ResponseEntity.ok(clientQueryService.getClientAccount(clientId));
     }
 
-    @PutMapping({"/{clientId}/updateAccount", "/{clientId}/account"})
+    @PutMapping({"/{clientId}/updateAccount"})
     public ResponseEntity<RetrieveClientAccount> updateClientAccount(
             @PathVariable("clientId") String clientId,
             @Valid @RequestBody(required = false) JsonNode body
@@ -132,7 +132,7 @@ public class ClientController {
         return ResponseEntity.ok(clientCommandService.updateClientAccount(clientId, request));
     }
 
-    @DeleteMapping("/{clientId}/account")
+    @DeleteMapping("/{clientId}/deleteAccount")
     public ResponseEntity<DeleteAccount> deleteClientAccount(
             @PathVariable("clientId") String clientId
     ) {
